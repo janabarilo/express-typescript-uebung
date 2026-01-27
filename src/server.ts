@@ -14,6 +14,26 @@ app.get("/health", (req, res) => {
   });
 });
 
+app.get("/greet", (req, res) => {
+  const name = req.query.name as string;
+  const lang = req.query.lang as string;
+
+  if (!name) {
+    return res.status(400).json({
+      message: "Name query parameter is required",
+    });
+  }
+
+  const greeting =
+    lang === "en"
+      ? `Hello ${name}`
+      : `Hallo ${name}`;
+
+  res.json({
+    message: greeting,
+  });
+});
+
 app.listen(3000, () => {
   console.log("Server läuft auf http://localhost:3000");
 });
