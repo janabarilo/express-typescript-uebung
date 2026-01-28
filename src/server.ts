@@ -184,6 +184,29 @@ app.post("/tweets", checkAuth, (req: AuthedRequest, res) => {
   return res.status(201).json(newTweet);
 });
 
+app.delete("/tweets/:id", checkAuth, (req: AuthedRequest, res) => {
+  const tweetId = req.params.id;
+  // Tweet finden
+  const tweetIndex = tweets.findIndex((t) => t.id === tweetId);
+
+  // Tweet nicht gefunden
+  if (tweetIndex === -1) {
+    return res.status(404).json({ error: "Tweet not found" });
+  }
+
+  const tweet = tweets[tweetIndex];
+
+  // Tweet gehört nicht dem eingeloggten User
+  if (tweet.author !== req.user) {
+    return res.status(403).json({ error: "Not allowed" });
+  }
+
+  // sonst Tweet löschen
+  tweets.splice(tweetIndex, 1);
+
+  return res.json({ success: true });
+});
+
 app.listen(3000, () => {
   console.log("Server läuft auf http://localhost:3000");
 });
