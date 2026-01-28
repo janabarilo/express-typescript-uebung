@@ -26,10 +26,6 @@ app.get("/greet", (req, res) => {
     });
   }
 
-  app.get("/users", (req, res) => {
-  res.status(200).json(users);
-});
-
   const greeting =
     lang === "en"
       ? `Hello ${name}`
@@ -38,6 +34,10 @@ app.get("/greet", (req, res) => {
   res.json({
     message: greeting,
   });
+});
+
+ app.get("/users", (req, res) => {
+  res.status(200).json(users);
 });
 
 app.listen(3000, () => {
