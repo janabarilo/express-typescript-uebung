@@ -1,4 +1,6 @@
 import express from "express";
+import users from "../data/users.json";
+
 
 const app = express();
 
@@ -23,6 +25,10 @@ app.get("/greet", (req, res) => {
       message: "Name query parameter is required",
     });
   }
+
+  app.get("/users", (req, res) => {
+  res.status(200).json(users);
+});
 
   const greeting =
     lang === "en"

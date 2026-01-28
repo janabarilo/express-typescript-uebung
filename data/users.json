@@ -1,0 +1,32 @@
+[
+  {
+    "id": 0,
+    "username": "anna",
+    "fullname": "Anna Müller",
+    "profileDescription": "Frontend Entwicklerin"
+  },
+  {
+    "id": 1,
+    "username": "max",
+    "fullname": "Max Mustermann",
+    "profileDescription": "Backend Fan"
+  },
+  {
+    "id": 2,
+    "username": "lisa",
+    "fullname": "Lisa Schmidt",
+    "profileDescription": "UX Designerin"
+  },
+  {
+    "id": 3,
+    "username": "tom",
+    "fullname": "Tom Becker",
+    "profileDescription": "DevOps Anfänger"
+  },
+  {
+    "id": 4,
+    "username": "jana",
+    "fullname": "Jana Ketela",
+    "profileDescription": "TypeScript lernt man 💪"
+  }
+]
