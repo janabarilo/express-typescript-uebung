@@ -129,7 +129,10 @@ app.post("/auth/logout", (req, res) => {
   }
 
   res.clearCookie("sessionid"); // muss exakt gleich heißen wie beim Login!
-  return res.json({ message: "Logout succeeded" });
+  return res.json({
+    success: true,
+    message: "Logged out",
+  });
 });
 
 app.listen(3000, () => {
