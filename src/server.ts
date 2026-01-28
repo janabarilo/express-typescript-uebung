@@ -23,9 +23,7 @@ type Tweet = {
   author: string;
 };
 
-type AuthedRequest = express.Request & {
-  user?: string;
-};
+type AuthedRequest = express.Request & { user?: string; tweet?: Tweet };
 
 const tweets: Tweet[] = [];
 
@@ -184,25 +182,28 @@ app.post("/tweets", checkAuth, (req: AuthedRequest, res) => {
   return res.status(201).json(newTweet);
 });
 
-app.delete("/tweets/:id", checkAuth, (req: AuthedRequest, res) => {
+const canDeleteTweet = (req: AuthedRequest, res: express.Response, next: express.NextFunction) => {
   const tweetId = req.params.id;
-  // Tweet finden
-  const tweetIndex = tweets.findIndex((t) => t.id === tweetId);
 
-  // Tweet nicht gefunden
-  if (tweetIndex === -1) {
+  const tweet = tweets.find((t) => t.id === tweetId);
+
+  if (!tweet) {
     return res.status(404).json({ error: "Tweet not found" });
   }
 
-  const tweet = tweets[tweetIndex];
-
-  // Tweet gehört nicht dem eingeloggten User
   if (tweet.author !== req.user) {
     return res.status(403).json({ error: "Not allowed" });
   }
 
-  // sonst Tweet löschen
-  tweets.splice(tweetIndex, 1);
+  req.tweet = tweet;
+  next();
+};
+
+app.delete("/tweets/:id", checkAuth, canDeleteTweet, (req: AuthedRequest, res) => {
+  const tweetId = req.params.id;
+
+  const index = tweets.findIndex((t) => t.id === tweetId);
+  tweets.splice(index, 1);
 
   return res.json({ success: true });
 });
