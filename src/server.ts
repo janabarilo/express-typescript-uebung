@@ -105,6 +105,33 @@ app.get("/auth/me", (req, res) => {
   return res.status(200).json({ username });
 });
 
+app.get("/me", (req, res) => {
+  const sessionId = req.cookies.sessionid; // oder sessionId (je nachdem wie du es im Code nutzt)
+
+  if (!sessionId) {
+    return res.status(401).json({ error: "Not signed in" });
+  }
+
+  const username = sessions.get(sessionId);
+
+  if (!username) {
+    return res.status(401).json({ error: "Not signed in" });
+  }
+
+  return res.json({ user: username });
+});
+
+app.post("/auth/logout", (req, res) => {
+  const sessionId = req.cookies.sessionid; // oder sessionId (je nachdem wie du es nutzt)
+
+  if (sessionId) {
+    sessions.delete(sessionId);
+  }
+
+  res.clearCookie("sessionid"); // muss exakt gleich heißen wie beim Login!
+  return res.json({ message: "Logout succeeded" });
+});
+
 app.listen(3000, () => {
   console.log("Server läuft auf http://localhost:3000");
 });
