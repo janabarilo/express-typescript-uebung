@@ -44,7 +44,7 @@ app.post("/auth/login", (req, res) => {
   sessions.set(sessionId, username);
 
   // Cookie setzen (httpOnly!)
-  res.cookie("sessionId", sessionId, {
+  res.cookie("sessionid", sessionId, {
     httpOnly: true,
   });
 
@@ -87,6 +87,22 @@ app.get("/greet", (req, res) => {
 
  app.get("/users", (req, res) => {
   res.status(200).json(users);
+});
+
+app.get("/auth/me", (req, res) => {
+  const sessionId = req.cookies.sessionid;
+
+  if (!sessionId) {
+    return res.status(401).json({ error: "Not logged in" });
+  }
+
+  const username = sessions.get(sessionId);
+
+  if (!username) {
+    return res.status(401).json({ error: "Invalid session" });
+  }
+
+  return res.status(200).json({ username });
 });
 
 app.listen(3000, () => {
