@@ -17,6 +17,37 @@ const registeredUsers: Map<string, string> = new Map([
 
 const sessions: Map<string, string> = new Map(); // sessionId -> username
 
+type Tweet = {
+  id: string;
+  text: string;
+  author: string;
+};
+
+type AuthedRequest = express.Request & {
+  user?: string;
+};
+
+const tweets: Tweet[] = [];
+
+
+const checkAuth = (req: any, res: any, next: any) => {
+  const sessionId = req.cookies.sessionid; // oder sessionId (je nachdem wie du es nutzt)
+
+  if (!sessionId) {
+    return res.status(401).json({ error: "Please sign in" });
+  }
+
+  const username = sessions.get(sessionId);
+
+  if (!username) {
+    return res.status(401).json({ error: "Please sign in" });
+  }
+
+  req.user = username;
+  next();
+};
+
+
 app.post("/auth/login", (req, res) => {
   console.log("BODY:", req.body);
  
@@ -133,6 +164,24 @@ app.post("/auth/logout", (req, res) => {
     success: true,
     message: "Logged out",
   });
+});
+
+app.post("/tweets", checkAuth, (req: AuthedRequest, res) => {
+  const { text } = req.body;
+
+  if (!text || typeof text !== "string") {
+    return res.status(400).json({ error: "Text is required" });
+  }
+
+  const newTweet: Tweet = {
+    id: crypto.randomUUID(),
+    text,
+    author: req.user!, // kommt aus Middleware
+  };
+
+  tweets.push(newTweet);
+
+  return res.status(201).json(newTweet);
 });
 
 app.listen(3000, () => {
