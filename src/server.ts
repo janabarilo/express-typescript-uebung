@@ -2,6 +2,8 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import crypto from "crypto";
 import users from "../data/users.json";
+import tweetRouter from "./routes/tweet.routes.js";
+
 
 const app = express();
 
@@ -207,6 +209,8 @@ app.delete("/tweets/:id", checkAuth, canDeleteTweet, (req: AuthedRequest, res) =
 
   return res.json({ success: true });
 });
+
+app.use(tweetRouter);
 
 app.listen(3000, () => {
   console.log("Server läuft auf http://localhost:3000");
