@@ -27,7 +27,7 @@ type Tweet = {
 
 type AuthedRequest = express.Request & { user?: string; tweet?: Tweet };
 
-const tweets: Tweet[] = [];
+
 
 
 const checkAuth = (req: any, res: any, next: any) => {
@@ -166,49 +166,7 @@ app.post("/auth/logout", (req, res) => {
   });
 });
 
-app.post("/tweets", checkAuth, (req: AuthedRequest, res) => {
-  const { text } = req.body;
 
-  if (!text || typeof text !== "string") {
-    return res.status(400).json({ error: "Text is required" });
-  }
-
-  const newTweet: Tweet = {
-    id: crypto.randomUUID(),
-    text,
-    author: req.user!, // kommt aus Middleware
-  };
-
-  tweets.push(newTweet);
-
-  return res.status(201).json(newTweet);
-});
-
-const canDeleteTweet = (req: AuthedRequest, res: express.Response, next: express.NextFunction) => {
-  const tweetId = req.params.id;
-
-  const tweet = tweets.find((t) => t.id === tweetId);
-
-  if (!tweet) {
-    return res.status(404).json({ error: "Tweet not found" });
-  }
-
-  if (tweet.author !== req.user) {
-    return res.status(403).json({ error: "Not allowed" });
-  }
-
-  req.tweet = tweet;
-  next();
-};
-
-app.delete("/tweets/:id", checkAuth, canDeleteTweet, (req: AuthedRequest, res) => {
-  const tweetId = req.params.id;
-
-  const index = tweets.findIndex((t) => t.id === tweetId);
-  tweets.splice(index, 1);
-
-  return res.json({ success: true });
-});
 
 app.use(tweetRouter);
 

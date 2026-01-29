@@ -1,12 +1,18 @@
 import { Router } from "express";
-import { getAllTweets, getTweetById } from "../controllers/tweet.controller.js";
+import {
+  getAllTweets,
+  getTweetById,
+  createTweet,
+  deleteTweet,
+} from "../controllers/tweet.controller.js";
 
 const tweetRouter = Router();
 
-// Read: alle Tweets
 tweetRouter.get("/tweets", getAllTweets);
-
-// Read: Tweet per ID
 tweetRouter.get("/tweets/:id", getTweetById);
+
+// ✅ NEW
+tweetRouter.post("/tweets", createTweet);
+tweetRouter.delete("/tweets/:id", deleteTweet);
 
 export default tweetRouter;
