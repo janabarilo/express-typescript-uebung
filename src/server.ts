@@ -3,7 +3,7 @@ import cookieParser from "cookie-parser";
 import crypto from "crypto";
 import users from "../data/users.json";
 import tweetRouter from "./routes/tweet.routes.js";
-
+import userRouter from "./routes/user.routes.js";
 
 const app = express();
 
@@ -169,6 +169,8 @@ app.post("/auth/logout", (req, res) => {
 
 
 app.use(tweetRouter);
+
+app.use(userRouter);
 
 app.listen(3000, () => {
   console.log("Server läuft auf http://localhost:3000");
