@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { tweetService } from "../services/tweet.service.js";
-
+import { HttpError } from "../errors/httpError.js";
 
 
 export const getAllTweets = (req: Request, res: Response, next: NextFunction) => {
@@ -19,7 +19,7 @@ export const getTweetById = (req: Request, res: Response, next: NextFunction) =>
   const tweet = tweetService.getById(id);
 
   if (!tweet) {
-    return res.status(404).json({ error: "Tweet not found" });
+    return next(new HttpError(404, "Tweet not found"));
   }
 
   return res.status(200).json(tweet);
@@ -34,7 +34,7 @@ export const createTweet = (req: Request, res: Response, next: NextFunction) => 
   const { text } = req.body;
 
  if (!text || typeof text !== "string" || text.trim() === "") {
-  return res.status(400).json({ error: "Text is required" });
+  return next(new HttpError(400, "Text is required"));
 }
 
 
@@ -56,7 +56,7 @@ export const deleteTweet = (req: Request, res: Response, next: NextFunction) => 
   const deleted = tweetService.deleteById(id);
 
   if (!deleted) {
-    return res.status(404).json({ error: "Tweet not found" });
+    return next(new HttpError(404, "Tweet not found"));
   }
 
   return res.status(200).json({ success: true });

@@ -4,6 +4,7 @@ import crypto from "crypto";
 import users from "../data/users.json";
 import tweetRouter from "./routes/tweet.routes.js";
 import userRouter from "./routes/user.routes.js";
+import { errorMiddleware } from "./middlewares/error.middleware.js";
 
 const app = express();
 
@@ -172,13 +173,8 @@ app.use(tweetRouter);
 
 app.use(userRouter);
 
-app.use((err: any, req: any, res: any, next: any) => {
-  console.error("ERROR:", err);
+app.use(errorMiddleware);
 
-  return res.status(500).json({
-    error: "Internal server error",
-  });
-});
 
 
 app.listen(3000, () => {
