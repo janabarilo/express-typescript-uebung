@@ -172,6 +172,15 @@ app.use(tweetRouter);
 
 app.use(userRouter);
 
+app.use((err: any, req: any, res: any, next: any) => {
+  console.error("ERROR:", err);
+
+  return res.status(500).json({
+    error: "Internal server error",
+  });
+});
+
+
 app.listen(3000, () => {
   console.log("Server läuft auf http://localhost:3000");
 });
