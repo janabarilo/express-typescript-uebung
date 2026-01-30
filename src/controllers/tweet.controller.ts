@@ -18,15 +18,12 @@ export const getTweetById = (req: Request, res: Response, next: NextFunction) =>
 
   const tweet = tweetService.getById(id);
 
-  if (!tweet) {
-    return next(new HttpError(404, "Tweet not found"));
-  }
-
   return res.status(200).json(tweet);
   } catch (err) {
     next(err);
   } 
 };
+
 
 // ✅ NEW: Create
 export const createTweet = (req: Request, res: Response, next: NextFunction) => {

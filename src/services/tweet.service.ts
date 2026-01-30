@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import { TweetNotFoundError } from "../errors/tweetNotFoundError.js";
 
 export type Tweet = {
   id: string;
@@ -16,8 +17,12 @@ export const tweetService = {
     return tweets;
   },
 
-  getById(id: string): Tweet | undefined {
-    return tweets.find((t) => t.id === id);
+  getById(id: string): Tweet {
+    const tweet = tweets.find((t) => t.id === id);
+    if (!tweet) {
+      throw new TweetNotFoundError();
+    }
+    return tweet;
   },
 
   create(text: string, author: string): Tweet {
