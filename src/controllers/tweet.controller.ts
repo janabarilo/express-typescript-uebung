@@ -22,9 +22,10 @@ export const getTweetById = (req: Request, res: Response) => {
 export const createTweet = (req: Request, res: Response) => {
   const { text } = req.body;
 
-  if (!text || typeof text !== "string") {
-    return res.status(400).json({ error: "Text is required" });
-  }
+ if (!text || typeof text !== "string" || text.trim() === "") {
+  return res.status(400).json({ error: "Text is required" });
+}
+
 
   // author kommt später aus Login (checkAuth)
   const author = "alice";
