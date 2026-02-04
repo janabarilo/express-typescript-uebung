@@ -5,6 +5,9 @@ import users from "../data/users.json";
 import tweetRouter from "./routes/tweet.routes.js";
 import userRouter from "./routes/user.routes.js";
 import { errorMiddleware } from "./middlewares/error.middleware.js";
+import "dotenv/config";
+
+console.log("DB_USER:", process.env.DB_USER);
 
 const app = express();
 
