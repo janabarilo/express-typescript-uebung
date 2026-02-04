@@ -6,6 +6,10 @@ export const tweetService = {
     return tweetRepo.getAllTweets();
   },
 
+  async getAllSorted() {
+  return tweetRepo.getAllTweetsSorted();
+},
+
   async getById(id: string) {
     const tweet = await tweetRepo.getTweetById(Number(id));
     if (!tweet) throw new TweetNotFoundError();
@@ -27,5 +31,10 @@ export const tweetService = {
 
   return updated;
 },
+
+async getByAuthor(author: string) {
+  return tweetRepo.getTweetsByAuthor(author);
+}
+
 
 };

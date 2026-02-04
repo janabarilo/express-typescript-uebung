@@ -12,6 +12,16 @@ export const getAllTweets = async(req: Request, res: Response, next: NextFunctio
   }
 };
 
+export const getAllTweetsSorted = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const tweets = await tweetService.getAllSorted();
+    return res.status(200).json(tweets);
+  } catch (err) {
+    next(err);
+  }
+};
+
+
 export const getTweetById = async (req: Request, res: Response, next: NextFunction) => {
   try {
   const id = req.params.id;
@@ -75,4 +85,14 @@ export const deleteTweet = async (req: Request, res: Response, next: NextFunctio
   } catch (err) {
     next(err);
 }
+};
+
+export const getTweetsByAuthor = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const author = req.params.author;
+    const tweets = await tweetService.getByAuthor(author);
+    return res.status(200).json(tweets);
+  } catch (err) {
+    next(err);
+  }
 };

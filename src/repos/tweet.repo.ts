@@ -57,3 +57,24 @@ export async function updateTweetById(
 
   return result.rows[0]; // entweder Tweet oder undefined
 }
+
+// Tweets sortiert nach Erstellungszeit (neueste zuerst)
+export async function getAllTweetsSorted() {
+  const result = await pool.query(`
+    SELECT id, text, author, created_at
+    FROM tweets
+    ORDER BY created_at DESC
+  `);
+
+  return result.rows;
+}
+
+//  Tweets von einem bestimmten Autor
+export async function getTweetsByAuthor(author: string) {
+  const result = await pool.query(
+    `SELECT id, text, author, created_at FROM tweets WHERE author = $1 ORDER BY created_at DESC`,
+    [author]
+  );
+
+  return result.rows;
+}
