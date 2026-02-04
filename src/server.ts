@@ -34,7 +34,6 @@ type AuthedRequest = express.Request & { user?: string; tweet?: Tweet };
 
 
 
-
 const checkAuth = (req: any, res: any, next: any) => {
   const sessionId = req.cookies.sessionid; // oder sessionId (je nachdem wie du es nutzt)
 
