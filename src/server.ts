@@ -6,6 +6,7 @@ import tweetRouter from "./routes/tweet.routes.js";
 import userRouter from "./routes/user.routes.js";
 import { errorMiddleware } from "./middlewares/error.middleware.js";
 import "dotenv/config";
+import pool from "./db/pool.postgres.js";
 
 console.log("DB_USER:", process.env.DB_USER);
 
@@ -50,6 +51,8 @@ const checkAuth = (req: any, res: any, next: any) => {
   req.user = username;
   next();
 };
+
+// pool.query("SELECT 1").then(() => console.log("✅ DB Verbindung klappt!"));
 
 
 app.post("/auth/login", (req, res) => {
