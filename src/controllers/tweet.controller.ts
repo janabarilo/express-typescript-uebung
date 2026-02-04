@@ -3,21 +3,20 @@ import { tweetService } from "../services/tweet.service.js";
 import { HttpError } from "../errors/httpError.js";
 
 
-export const getAllTweets = (req: Request, res: Response, next: NextFunction) => {
+export const getAllTweets = async(req: Request, res: Response, next: NextFunction) => {
   try {
-  const tweets = tweetService.getAll();
+  const tweets = await tweetService.getAll();
   return res.status(200).json(tweets);
   } catch (err) {
     next(err);
   }
 };
 
-export const getTweetById = (req: Request, res: Response, next: NextFunction) => {
+export const getTweetById = async (req: Request, res: Response, next: NextFunction) => {
   try {
   const id = req.params.id;
 
-  const tweet = tweetService.getById(id);
-
+  const tweet = await tweetService.getById(id);
   return res.status(200).json(tweet);
   } catch (err) {
     next(err);
@@ -26,7 +25,7 @@ export const getTweetById = (req: Request, res: Response, next: NextFunction) =>
 
 
 // ✅ NEW: Create
-export const createTweet = (req: Request, res: Response, next: NextFunction) => {
+export const createTweet = async(req: Request, res: Response, next: NextFunction) => {
   try {
   const { text } = req.body;
 
@@ -38,7 +37,7 @@ export const createTweet = (req: Request, res: Response, next: NextFunction) => 
   // author kommt später aus Login (checkAuth)
   const author = "alice";
 
-  const newTweet = tweetService.create(text, author);
+  const newTweet = await tweetService.create(text, author);
   return res.status(201).json(newTweet);
   } catch (err) {
     next(err);
@@ -46,11 +45,11 @@ export const createTweet = (req: Request, res: Response, next: NextFunction) => 
 };
 
 // ✅ NEW: Delete
-export const deleteTweet = (req: Request, res: Response, next: NextFunction) => {
+export const deleteTweet = async (req: Request, res: Response, next: NextFunction) => {
   try {
   const id = req.params.id;
 
-  const deleted = tweetService.deleteById(id);
+  const deleted = await tweetService.deleteById(id);
 
   if (!deleted) {
     return next(new HttpError(404, "Tweet not found"));

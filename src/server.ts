@@ -10,6 +10,8 @@ import pool from "./db/pool.postgres.js";
 
 console.log("DB_USER:", process.env.DB_USER);
 
+// console.log("DB_PASSWORD:", process.env.DB_PASSWORD);
+
 const app = express();
 
 app.use(express.json());
@@ -51,7 +53,7 @@ const checkAuth = (req: any, res: any, next: any) => {
   next();
 };
 
-// pool.query("SELECT 1").then(() => console.log("✅ DB Verbindung klappt!"));
+pool.query("SELECT 1").then(() => console.log("✅ DB Verbindung klappt!"));
 
 
 app.post("/auth/login", (req, res) => {
