@@ -19,4 +19,13 @@ export const tweetService = {
   async deleteById(id: string) {
     return tweetRepo.deleteTweetById(Number(id));
   },
+
+  async updateById(id: string, text: string) {
+  const updated = await tweetRepo.updateTweetById(Number(id), text);
+
+  if (!updated) throw new TweetNotFoundError();
+
+  return updated;
+},
+
 };

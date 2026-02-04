@@ -42,3 +42,18 @@ export async function deleteTweetById(id: number): Promise<boolean> {
 
   return result.rowCount === 1;
 }
+
+export async function updateTweetById(
+  id: number,
+  text: string
+) {
+  const result = await pool.query(
+    `UPDATE tweets
+     SET text = $1
+     WHERE id = $2
+     RETURNING id, text, author`,
+    [text, id]
+  );
+
+  return result.rows[0]; // entweder Tweet oder undefined
+}

@@ -60,3 +60,19 @@ export const deleteTweet = async (req: Request, res: Response, next: NextFunctio
     next(err);
   } 
 };
+  export const updateTweet = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id;
+    const { text } = req.body;
+
+    if (!text || typeof text !== "string" || text.trim() === "") {
+      return next(new HttpError(400, "Text is required"));
+    }
+
+    const updatedTweet = await tweetService.updateById(id, text);
+
+    return res.status(200).json(updatedTweet);
+  } catch (err) {
+    next(err);
+}
+};
