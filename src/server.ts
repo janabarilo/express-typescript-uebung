@@ -53,8 +53,10 @@ const checkAuth = (req: any, res: any, next: any) => {
   next();
 };
 
-pool.query("SELECT 1").then(() => console.log("✅ DB Verbindung klappt!"));
-
+pool
+  .query("SELECT 1")
+  .then(() => console.log("✅ DB Verbindung klappt!"))  
+  .catch(err => console.error("❌ DB Fehler:", err));
 
 app.post("/auth/login", (req, res) => {
   console.log("BODY:", req.body);
